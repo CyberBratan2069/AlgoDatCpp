@@ -6,6 +6,7 @@
 
 #pragma once
 #include <exception>
+#include <stdexcept>
 
 
 template<typename E>
@@ -15,49 +16,51 @@ private:
         E element;
         Node* successor;
 
-        Node(E e) : element(e), successor(nullptr) {}
+        Node(const E& e) : element(e), successor(nullptr) {}
     };
 
     Node* firstNode;
     Node* lastNode;
 
 public:
-    LinkedQueue() {
-        firstNode = new Node(E());
-        lastNode = firstNode->successor;
+    LinkedQueue() : firstNode(nullptr), lastNode(nullptr) {}
+
+    ~LinkedQueue() {
+        while (!isEmpty()) dequeue();
     }
 
     // Check Queue
-    bool empty() {
+    bool isEmpty() const {
         if (firstNode == nullptr) return true;
         return false;
     }
 
     // Get first Element in Queue
     E first() {
-        if (firstNode == nullptr) throw std::exception("No Element founded!");
+        if (isEmpty()) throw std::runtime_error("No Element founded!");
         return firstNode->element;
     }
 
     // adding an element to the end of the queue
     E enqueue(E element) {
-        Node addedNode = new Node(element);
-        if (firstNode == nullptr) {
+        Node* addedNode = new Node(element);
+        if (isEmpty()) {
             firstNode = addedNode;
             lastNode  = addedNode;
         } else {
             lastNode->successor = addedNode;
             lastNode = addedNode;
         }
-        return addedNode.element;
+        return addedNode->element;
     }
 
     //removing an element from the front of the queue
     E dequeue() {
-        if (firstNode == nullptr) throw std::exception("No Element founded!");
-        E removedElement = firstNode->element;
+        if (isEmpty()) throw std::runtime_error("No Element founded!");
+        E elementToRemove  = firstNode->element;
         firstNode = firstNode->successor;
         if (firstNode == nullptr) lastNode = nullptr;
-        return removedElement;
+        delete firstNode;
+        return elementToRemove;
     }
 };
