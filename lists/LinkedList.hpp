@@ -17,7 +17,7 @@ private:
         E element;
         Node* successor;
 
-        Node(E e) : element(e), successor(nullptr) {}
+        explicit Node(E e) : element(e), successor(nullptr) {}
     };
 
     Node* firstNode;

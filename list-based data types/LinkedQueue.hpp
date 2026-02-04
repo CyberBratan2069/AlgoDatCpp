@@ -1,11 +1,10 @@
 /***********************************************************************************************************************
 * @created Christian Reiswich
- * @date 03.02.2026
+ * @date 04.02.2026
  **********************************************************************************************************************/
 
 
 #pragma once
-#include <exception>
 #include <stdexcept>
 
 
@@ -16,7 +15,7 @@ private:
         E element;
         Node* successor;
 
-        Node(const E& e) : element(e), successor(nullptr) {}
+        explicit Node(const E& e) : element(e), successor(nullptr) {}
     };
 
     Node* firstNode;
